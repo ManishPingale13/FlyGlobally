@@ -33,7 +33,8 @@ class DestinationListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        loadDestinations()
+//        loadDestinations()
+        loadIndianDestinations()
     }
 
     private fun loadDestinations() {
@@ -65,6 +66,37 @@ class DestinationListActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun loadIndianDestinations() {
+
+        val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
+
+        val requestCall = destinationService.getIndiaDestinations("India")
+
+        requestCall.enqueue(object : Callback<List<Destination>> {
+            override fun onResponse(
+                call: Call<List<Destination>>,
+                response: Response<List<Destination>>
+            ) {
+                if (response.isSuccessful) {
+                    val destinationList: List<Destination> = response.body()!!
+                    destiny_recycler_view.adapter = DestinationAdapter(destinationList)
+                    Log.d(TAG, "onResponse: $destinationList")
+                } else {
+                    Toast.makeText(this@DestinationListActivity, "Failed ", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Destination>>, t: Throwable) {
+                Toast.makeText(this@DestinationListActivity, "Error Occurred", Toast.LENGTH_SHORT)
+                    .show()
+                Log.d(TAG, "onFailure: $t")
+
+            }
+        })
+    }
+
 
     companion object {
         private const val TAG = "DestinationListActivity"
