@@ -73,7 +73,7 @@ class DestinationListActivity : AppCompatActivity() {
 
         var filter = HashMap<String, String>()
         filter["country"] = "India"
-        filter["count"] = "2"
+        filter["count"] = "1"
         val requestCall = destinationService.getIndiaDestinations(filter)
 
         requestCall.enqueue(object : Callback<List<Destination>> {
