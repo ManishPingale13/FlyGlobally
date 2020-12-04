@@ -71,7 +71,10 @@ class DestinationListActivity : AppCompatActivity() {
 
         val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
 
-        val requestCall = destinationService.getIndiaDestinations("India")
+        var filter = HashMap<String, String>()
+        filter.put("country", "India")
+        filter.put("count", "2")
+        val requestCall = destinationService.getIndiaDestinations(filter)
 
         requestCall.enqueue(object : Callback<List<Destination>> {
             override fun onResponse(
