@@ -41,12 +41,12 @@ class DestinationListActivity : AppCompatActivity() {
 
         val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
 
-        val requestCall = destinationService.getDestinationList()
+        val requestCall = destinationService.getDestinationList("EN")
 
         requestCall.enqueue(object : Callback<List<Destination>> {
             override fun onResponse(
                 call: Call<List<Destination>>,
-                response: Response<List<Destination>>
+                response: Response<List<Destination>>,
             ) {
                 if (response.isSuccessful) {
                     val destinationList: List<Destination> = response.body()!!
@@ -79,7 +79,7 @@ class DestinationListActivity : AppCompatActivity() {
         requestCall.enqueue(object : Callback<List<Destination>> {
             override fun onResponse(
                 call: Call<List<Destination>>,
-                response: Response<List<Destination>>
+                response: Response<List<Destination>>,
             ) {
                 if (response.isSuccessful) {
                     val destinationList: List<Destination> = response.body()!!
