@@ -41,7 +41,9 @@ class DestinationCreateActivity : AppCompatActivity() {
                         val newlyCreatedDestination = response.body()
                         Log.d(TAG, "onResponse: BODY  $newlyCreatedDestination")
                         finish()
-                        Toast.makeText(applicationContext, "Success!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext,
+                            "Destination Added Successfully!",
+                            Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(applicationContext, "Failed!", Toast.LENGTH_SHORT).show()
                     }
@@ -58,6 +60,6 @@ class DestinationCreateActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "DestinationCreateActivi"
+        private const val TAG = "DestinationCreateActiv"
     }
 }

@@ -3,6 +3,7 @@ package com.example.globofly.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import com.example.globofly.R
@@ -78,13 +79,27 @@ class DestinationDetailActivity : AppCompatActivity() {
             val country = et_country.text.toString()
 
             // To be replaced by retrofit code
-            val destination = Destination()
-            destination.id = id
-            destination.city = city
-            destination.description = description
-            destination.country = country
+            val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
+            val requestCall = destinationService.updateDestination(id, city, country, description)
 
-            SampleData.updateDestination(destination)
+            requestCall.enqueue(object : retrofit2.Callback<Destination> {
+                override fun onResponse(call: Call<Destination>, response: Response<Destination>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(applicationContext,
+                            "Item was updated Successfully!",
+                            Toast.LENGTH_SHORT).show()
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, "FAILED!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Destination>, t: Throwable) {
+                    Log.d("TAG", "onFailure: ${t.message}")
+                    Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                }
+
+            })
             finish() // Move back to DestinationListActivity
         }
     }
@@ -109,7 +124,7 @@ class DestinationDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-
         const val ARG_ITEM_ID = "item_id"
+        const val TAG = "DestinationDetailActivity"
     }
 }
