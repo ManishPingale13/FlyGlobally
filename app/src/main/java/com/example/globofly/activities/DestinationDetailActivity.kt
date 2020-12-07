@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.example.globofly.R
 import com.example.globofly.helpers.Destination
-import com.example.globofly.helpers.SampleData
 import com.example.globofly.services.DestinationService
 import com.example.globofly.services.ServiceBuilder
 import kotlinx.android.synthetic.main.activity_destiny_detail.*
@@ -78,7 +77,6 @@ class DestinationDetailActivity : AppCompatActivity() {
             val description = et_description.text.toString()
             val country = et_country.text.toString()
 
-            // To be replaced by retrofit code
             val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
             val requestCall = destinationService.updateDestination(id, city, country, description)
 
@@ -86,11 +84,12 @@ class DestinationDetailActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Destination>, response: Response<Destination>) {
                     if (response.isSuccessful) {
                         Toast.makeText(applicationContext,
-                            "Item was updated Successfully!",
+                            "Item was deleted Successfully!",
                             Toast.LENGTH_SHORT).show()
                         finish()
                     } else {
-                        Toast.makeText(applicationContext, "FAILED!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Failed to Delete!", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
@@ -108,9 +107,24 @@ class DestinationDetailActivity : AppCompatActivity() {
 
         btn_delete.setOnClickListener {
 
-            // To be replaced by retrofit code
-            SampleData.deleteDestination(id)
-            finish() // Move back to DestinationListActivity
+            val destinationService = ServiceBuilder.buildService(DestinationService::class.java)
+            val requestCall = destinationService.deleteDestination(id)
+
+            requestCall.enqueue(object : retrofit2.Callback<Unit> {
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    if (response.isSuccessful) {
+                        finish()
+                    } else {
+                        Toast.makeText(applicationContext, " Failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                    Log.d(TAG, "onFailure: ${t.message}")
+                    Toast.makeText(applicationContext, " Error!", Toast.LENGTH_SHORT)
+                }
+            })
+
         }
     }
 
@@ -125,6 +139,6 @@ class DestinationDetailActivity : AppCompatActivity() {
 
     companion object {
         const val ARG_ITEM_ID = "item_id"
-        const val TAG = "DestinationDetailActivity"
+        const val TAG = "DestinationDetailActivi"
     }
 }
