@@ -33,8 +33,8 @@ class DestinationListActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-//        loadDestinations()
-        loadIndianDestinations()
+        loadDestinations()
+//        loadIndianDestinations()
     }
 
     private fun loadDestinations() {

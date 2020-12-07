@@ -2,9 +2,7 @@ package com.example.globofly.services
 
 import com.example.globofly.helpers.Destination
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.QueryMap
+import retrofit2.http.*
 
 interface DestinationService {
 
@@ -16,4 +14,7 @@ interface DestinationService {
 
     @GET("destination")
     fun getIndiaDestinations(@QueryMap filter: HashMap<String, String>): Call<List<Destination>>
+
+    @POST("/destination")
+    fun addDestination(@Body newDestination: Destination): Call<Destination>
 }
