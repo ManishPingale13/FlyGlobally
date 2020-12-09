@@ -1,9 +1,13 @@
 package com.example.globofly.services
 
+import android.annotation.SuppressLint
+import android.os.Build
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 
 object ServiceBuilder {
 
@@ -13,8 +17,23 @@ object ServiceBuilder {
     private val logger
         get() = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
+    //Create a custom interceptor
+    @SuppressLint("ConstantLocale")
+    private val headerInterceptor: Interceptor = Interceptor { chain ->
+        var request = chain.request()
+
+        request = request.newBuilder()
+            .addHeader("x-device-type", Build.DEVICE)
+            .addHeader("Accept-Language", Locale.getDefault().language)
+            .build()
+
+        chain.proceed(request)
+    }
+
     //Create okHttp Client
-    private val okHttp = OkHttpClient.Builder().addInterceptor(logger)
+    private val okHttp =
+        OkHttpClient.Builder().addInterceptor(headerInterceptor).addInterceptor(logger)
+
 
     //Create Retrofit Builder
     private val builder =

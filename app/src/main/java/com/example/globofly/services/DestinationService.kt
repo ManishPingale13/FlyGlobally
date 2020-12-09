@@ -7,9 +7,8 @@ import retrofit2.http.*
 interface DestinationService {
 
 
-    @Headers("x-device-type: Android")//Static Header
     @GET("destination")
-    fun getDestinationList(@Header("Accept-Language") language: String): Call<List<Destination>>//Dynamic Header
+    fun getDestinationList(): Call<List<Destination>>//Dynamic Header
 
     @GET("destination/{id}")
     fun getDestination(@Path("id") id: Int): Call<Destination>
