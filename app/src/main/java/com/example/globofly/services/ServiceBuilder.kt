@@ -8,11 +8,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object ServiceBuilder {
 
     //Before release, Change this URL
-    private const val URL = "http://192.168.2.8:9000/"
+    private const val URL = "http://192.168.2.4:9000/"
 
     private val logger
         get() = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -33,6 +34,7 @@ object ServiceBuilder {
     //Create okHttp Client
     private val okHttp =
         OkHttpClient.Builder().addInterceptor(headerInterceptor).addInterceptor(logger)
+            .callTimeout(6, TimeUnit.SECONDS)
 
 
     //Create Retrofit Builder

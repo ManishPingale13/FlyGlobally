@@ -43,6 +43,9 @@ class DestinationListActivity : AppCompatActivity() {
 
         val requestCall = destinationService.getDestinationList()
 
+        //To cancel Request
+//        requestCall.cancel()
+
         requestCall.enqueue(object : Callback<List<Destination>> {
             override fun onResponse(
                 call: Call<List<Destination>>,
